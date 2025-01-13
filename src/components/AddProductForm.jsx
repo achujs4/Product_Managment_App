@@ -1,7 +1,7 @@
 import { Button, Grid, TextField } from '@mui/material';
 import React, { useState } from 'react';
 
-const AddProducts = () => {
+const AddProductForm = () => {
   const [addData, setAddData] = useState({
     title: '',
     image: '',
@@ -16,6 +16,7 @@ const AddProducts = () => {
     rating: ''
   });
 
+  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAddData((prevData) => ({
@@ -24,14 +25,10 @@ const AddProducts = () => {
     }));
   };
 
+  // Validate input fields
   const validate = () => {
     let isValid = true;
-    const newErrors = {
-      title: '',
-      image: '',
-      price: '',
-      rating: ''
-    };
+    const newErrors = {};
 
     if (!addData.title.trim()) {
       newErrors.title = 'Title is required';
@@ -44,7 +41,7 @@ const AddProducts = () => {
     }
 
     if (!addData.price.trim() || isNaN(addData.price) || Number(addData.price) <= 0) {
-      newErrors.price = 'Valid price is required (greater than 0)';
+      newErrors.price = 'Price must be a number greater than 0';
       isValid = false;
     }
 
@@ -57,21 +54,23 @@ const AddProducts = () => {
     return isValid;
   };
 
+  // URL validation
   const isValidURL = (url) => {
     try {
       new URL(url);
       return true;
-    } catch (_) {
+    } catch {
       return false;
     }
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
       console.log('Product Details:', addData);
       alert('Product added successfully!');
-      // Optionally reset form
+      // Reset form after successful validation
       setAddData({
         title: '',
         image: '',
@@ -82,10 +81,10 @@ const AddProducts = () => {
   };
 
   return (
-    <div style={{ margin: '8%' }}>
+    <div style={{ margin: '50px auto', maxWidth: '600px' }}>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={12}>
+          <Grid item xs={12}>
             <TextField
               label="Title"
               name="title"
@@ -97,7 +96,7 @@ const AddProducts = () => {
               helperText={errors.title}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid item xs={12}>
             <TextField
               label="Image URL"
               name="image"
@@ -109,7 +108,7 @@ const AddProducts = () => {
               helperText={errors.image}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid item xs={12}>
             <TextField
               label="Price"
               name="price"
@@ -121,7 +120,7 @@ const AddProducts = () => {
               helperText={errors.price}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid item xs={12}>
             <TextField
               label="Rating"
               name="rating"
@@ -133,8 +132,8 @@ const AddProducts = () => {
               helperText={errors.rating}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
-            <Button color="secondary" variant="contained" type="submit">
+          <Grid item xs={12}>
+            <Button color="primary" variant="contained" type="submit" fullWidth>
               Add Product
             </Button>
           </Grid>
@@ -144,4 +143,4 @@ const AddProducts = () => {
   );
 };
 
-export default AddProducts;
+export default AddProductForm;

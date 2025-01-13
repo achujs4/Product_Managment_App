@@ -11,7 +11,7 @@ const Navbar = () => {
 		  Product React App
 		</Typography>
 		<Link to='/'><Button style={{color:'white'}}>Home</Button></Link>
-		<Link to='/addproducts'><Button style={{color:'white'}}>ADDProduct</Button></Link>
+		<Link to='/add-products'><Button style={{color:'white'}}>ADDProduct</Button></Link>
 
 	  </Toolbar>
 	</AppBar>

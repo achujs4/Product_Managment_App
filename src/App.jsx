@@ -1,20 +1,22 @@
 import { useState } from 'react'
-import { BrowserRouter ,Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import Navbar from "./components/Navbar";
 import ProductDashboard from "./components/ProductDashboard";
 import AddProductForm from "./components/AddProductForm";
-
 import './App.css'
 
-const App=() =>{
-  <BrowserRouter>
+function App(){
+  const [count, setCount] = useState(0)
+
+return(
+  <>
   <Navbar />
-
   <Routes>
-    <Route path="/" element={<ProductDashboard />} /> {/* Home page */}
-    <Route path="/add-product" element={<AddProductForm />} /> {/* Add Product page */}
+    <Route path="/" element={<ProductDashboard />} />
+    <Route path="/add-product" element={<AddProductForm />} /> 
   </Routes>
-</BrowserRouter>
+ </>
+)
+}
 
-};
 export default App

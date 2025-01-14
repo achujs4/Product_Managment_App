@@ -1,146 +1,60 @@
-import { Button, Grid, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import { Button, TextField } from '@mui/material'
+import React, { useState } from 'react'
+import Grid from '@mui/material/Grid2';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const AddProductForm = () => {
-  const [addData, setAddData] = useState({
-    title: '',
-    image: '',
-    price: '',
-    rating: ''
-  });
 
-  const [errors, setErrors] = useState({
-    title: '',
-    image: '',
-    price: '',
-    rating: ''
-  });
+const Addproducts = () => {
+    const [form,setForm]=useState({
+        product:'',
+        image:'',
+        price:'',
+        rating:''
+    })
 
-  // Handle input change
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setAddData((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
-  };
+    const navigate=useNavigate();          // redirecting or navigating to a different page
+    
+      function capValue(){
+       console.log(form);
+       axios.post('https://fakestoreapi.com/products',form).then((res)=>{
+        
+        navigate('/home');
+       
+    
+       }).catch((error)=>{
+        alert('Invalid Login');
+       })
+      }
+   return (
+       <div style={{margin:'7%'}}>
+    <Grid container spacing={2}>
+  <Grid size={{ xs: 6, md: 6 }}>
+    <TextField fullWidth label='Product Name' variant='outlined' name='title' onChange={(e)=>{
+          setForm({...form,title:e.target.value}) 
+  }} required></TextField>
+  </Grid>
+  <Grid size={{ xs: 6, md: 6 }}>
+  <TextField fullWidth label='Price' variant='outlined' name='price' onChange={(e)=>{
+          setForm({...form,price:e.target.value})
+  }} required></TextField>
+  </Grid>
+  <Grid size={{ xs: 6, md: 6 }}>
+  <TextField fullWidth label='Rating' variant='outlined' name='rating' onChange={(e)=>{
+          setForm({...form,rating:e.target.value})
+  }} required></TextField>
+  </Grid>
+  <Grid size={{ xs: 6, md: 6 }}>
+  <TextField fullWidth label='Image' variant='outlined' name='image' onChange={(e)=>{
+          setForm({...form,image:e.target.value})
+  }} required></TextField>
+  </Grid>
+  <Button color='secondary' variant='contained' onClick={capValue}>AddProduct</Button> <br />
+  
+</Grid>
 
-  // Validate input fields
-  const validate = () => {
-    let isValid = true;
-    const newErrors = {};
-
-    if (!addData.title.trim()) {
-      newErrors.title = 'Title is required';
-      isValid = false;
-    }
-
-    if (!addData.image.trim() || !isValidURL(addData.image)) {
-      newErrors.image = 'Valid image URL is required';
-      isValid = false;
-    }
-
-    if (!addData.price.trim() || isNaN(addData.price) || Number(addData.price) <= 0) {
-      newErrors.price = 'Price must be a number greater than 0';
-      isValid = false;
-    }
-
-    if (!addData.rating.trim() || isNaN(addData.rating) || Number(addData.rating) < 0 || Number(addData.rating) > 5) {
-      newErrors.rating = 'Rating must be between 0 and 5';
-      isValid = false;
-    }
-
-    setErrors(newErrors);
-    return isValid;
-  };
-
-  // URL validation
-  const isValidURL = (url) => {
-    try {
-      new URL(url);
-      return true;
-    } catch {
-      return false;
-    }
-  };
-
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      console.log('Product Details:', addData);
-      alert('Product added successfully!');
-      // Reset form after successful validation
-      setAddData({
-        title: '',
-        image: '',
-        price: '',
-        rating: ''
-      });
-    }
-  };
-
-  return (
-    <div style={{ margin: '50px auto', maxWidth: '600px' }}>
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              label="Title"
-              name="title"
-              variant="outlined"
-              fullWidth
-              value={addData.title}
-              onChange={handleChange}
-              error={!!errors.title}
-              helperText={errors.title}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="Image URL"
-              name="image"
-              variant="outlined"
-              fullWidth
-              value={addData.image}
-              onChange={handleChange}
-              error={!!errors.image}
-              helperText={errors.image}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="Price"
-              name="price"
-              variant="outlined"
-              fullWidth
-              value={addData.price}
-              onChange={handleChange}
-              error={!!errors.price}
-              helperText={errors.price}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="Rating"
-              name="rating"
-              variant="outlined"
-              fullWidth
-              value={addData.rating}
-              onChange={handleChange}
-              error={!!errors.rating}
-              helperText={errors.rating}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Button color="primary" variant="contained" type="submit" fullWidth>
-              Add Product
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
     </div>
-  );
-};
+  )
+}
 
-export default AddProductForm;
+export default Addproducts
